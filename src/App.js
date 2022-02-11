@@ -1,6 +1,6 @@
 import './App.css';
 import React, { Component } from 'react';
-import { CURRENCY_CODES } from './constants';
+import { CURRENCY } from './constants';
 
 function fetchAPI(converted_to, converted_from, amount) {
   return fetch('http://127.0.0.1:3000/exchange/' + converted_to + '?converted_from=' + converted_from + '&amount=' + amount)
@@ -12,31 +12,32 @@ class App extends Component {
 
     this.state = {
       result: "",
-      converted_to: "",
-      converted_from: "",
+      converted_to: "USD",
+      convert_to_symbol: "",
+      converted_from: "CAD",
       amount: 1.00,
-      currency_codes: CURRENCY_CODES
+      currency: CURRENCY
     }
   }
 
   fetchAPI(converted_to, converted_from, amount) {
     let url = 'http://127.0.0.1:3000/exchange/' + converted_to + '?converted_from=' + converted_from + '&amount=' + amount
-    console.log(url)
     return fetch(url)
   }
 
   renderSelectOptions(select_name, select_value) {
     return (
-      <select name={select_name} value={select_value} onChange={() => this.handleInputChange}>
-        {this.state.currency_codes.map(code => <option key={code} value={code}>{code}</option>)}
+      <select name={select_name} value={select_value} onChange={(e) => this.handleInputChange(e)}>
+        {this.state.currency.map(currency => <option key={currency.code} value={currency.code}>{currency.code} ({currency.name})</option>)}
       </select>
     )
   }
 
   handleOnClick() {
-    console.log("handling click")
-    fetchAPI(this.state.converted_to, this.state.converted_from, this.state.amount).then(result => {
-      this.setState({ result })
+    fetchAPI(this.state.converted_to, this.state.converted_from, this.state.amount)
+    .then(response => response.json())
+    .then((result) => {
+      this.setState({ result: result.new_amount })
     })
   }
 
@@ -61,8 +62,9 @@ class App extends Component {
         <h3>Convert To</h3>
         {this.renderSelectOptions("converted_to", this.state.converted_to)}
         <h3>Amount</h3>
-        <input value={this.state.amount} onChange={() => this.handleInputChange} type="number" min="1" step="any" />
-        <button onClick={() => this.handleOnClick}>Convert</button>
+        <input name="amount" value={this.state.amount} onChange={(e) => this.handleInputChange(e)} type="number" min="1" step="any" />
+        <button onClick={() => this.handleOnClick()}>Convert</button>
+        <h3>{this.state.convert_to_symbol}Result</h3>
         <div>{this.state.result}</div>
       </div>
     );
