@@ -1,6 +1,7 @@
-# Getting Started with Create React App
+# Getting Started
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Node.js
+This React app uses Node.js/npm. If needed, you can download it from the [website](https://nodejs.org/en/), by using Homebrew on a Mac (`brew install node`), by using Chocolaty on Windows (`choco install node`), or by using VSCode's [Remote Containers extension](https://code.visualstudio.com/docs/remote/containers).  
 
 ## Connecting With Rails Backend
 
