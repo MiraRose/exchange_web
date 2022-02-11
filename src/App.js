@@ -1,9 +1,9 @@
 import './App.css';
 import React, { Component } from 'react';
-import { CURRENCY } from './constants';
+import { CURRENCY, API_URL } from './constants';
 
 function fetchAPI(converted_to, converted_from, amount) {
-  return fetch('http://127.0.0.1:3000/exchange/' + converted_to + '?converted_from=' + converted_from + '&amount=' + amount)
+  return fetch('http://' + API_URL + '/exchange/' + converted_to + '?converted_from=' + converted_from + '&amount=' + amount)
 }
 
 class App extends Component {
@@ -18,11 +18,6 @@ class App extends Component {
       amount: 1.00,
       currency: CURRENCY
     }
-  }
-
-  fetchAPI(converted_to, converted_from, amount) {
-    let url = 'http://127.0.0.1:3000/exchange/' + converted_to + '?converted_from=' + converted_from + '&amount=' + amount
-    return fetch(url)
   }
 
   renderSelectOptions(select_name, select_value) {
